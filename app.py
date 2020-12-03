@@ -59,7 +59,6 @@ rows_for_training = np.random.choice( df.index, 24712, False )
 training = df.index.isin(rows_for_training)
 df_training = df[training]
 df_validation = df[~training]
-len(df_training), len(df_validation)
 
 
 # This code is being created by first generating 24712 random rows to df_training dataframe. And the rest will be put into df_validation dataframe. This gives us about 60% training set and 40% validation set.
@@ -87,7 +86,6 @@ def score_model (M, validation):
     return 2 * precision * recall / (precision + recall)
 
 model = fit_model_to(df_training)
-score_model(model, df_training), score_model(model, df_validation)
 
 
 # The values retured are the F1 score from training dataset and validation dataset. F1 score represents how good our model is by using the precision and recall values. We can see that both F1 score for training and validation datasets are relatively low. Possible reason is that we have high number of predictor variables. It's likely that some of predictors do not predict our response variable well. 
@@ -117,7 +115,6 @@ def fit_model_to (training):
 
 
 model = fit_model_to(df_training)
-print(score_model(model, df_training), score_model(model, df_validation))
 
 
 # Here the coefficients are sorted in order of their importance to predict the model. We can perform a series of trial and error to see which columns to keep in the modeling in order to perform a higher F1 score.
@@ -127,7 +124,6 @@ print(score_model(model, df_training), score_model(model, df_validation))
 
 columns = ['emp.var.rate', 'duration', 'cons.price.idx','nr.employed', 'contact','pdays','cons.conf.idx','default','previous','y']
 model = fit_model_to( df_training.loc[:,columns] )
-score_model( model, df_training.loc[:,columns] ), score_model( model, df_validation.loc[:,columns] )
 
 
 # Here are the final predictors that we decided to keep after experimenting various combinations. 
@@ -136,8 +132,12 @@ score_model( model, df_training.loc[:,columns] ), score_model( model, df_validat
 
 
 import streamlit as st
+st.title( 'Term Deposit Subscription Status vs. Potential Predictors' )
+st.sidebar.markdown( '''
+The heatmap shows the correlation between term deposit subscription status and its potential predictors. The predictors are choosen based on the logistic regression model built to predict the subscription status, 
+which is also available on https://github.com/LiyaZhang-ziqing/Bank. Last column of the heatmap is the area that need to focus on. None of the predictors has strong correlation with subscription status, 
+which explains why the F1 score from the modeling is relatively low. ''' )
 df_final = df.loc[:, columns]
-st.write(df_final.head())
 
 
 # In[174]:
