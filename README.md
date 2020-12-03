@@ -2,7 +2,7 @@ The final project that Zhu and Liya has decided to work on is to build a logisti
 
 Lastly, we created a heatmap showing the correlation between the subscription status and each predictors. This heatmap is published on https://ancient-forest-16543.herokuapp.com/.
 
-The python file (https://github.com/LiyaZhang-ziqing/Bank/blob/main/app.py) contains all code used in this final project, including data cleaning, logistic regression modeling and heatmap. And the final project markdown file (https://github.com/LiyaZhang-ziqing/Bank/blob/main/Final%20Project%20Markdown.pdf) presents readable version of the python file, including the outputs.
+The python file (https://github.com/LiyaZhang-ziqing/Bank/blob/main/app.py) contains all code used in this final project, including data cleaning, logistic regression modeling and heatmap. And the final project markdown file (https://github.com/LiyaZhang-ziqing/Bank/blob/main/Final%20Project%20Markdown%20(Bank).pdf) presents readable version of the python file, including the outputs.
 
 
 
