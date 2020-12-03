@@ -72,7 +72,7 @@ from sklearn.linear_model import LogisticRegression
 def fit_model_to (training):
     predictors = training.iloc[:,:-1]
     response = training.iloc[:,-1]
-    model = LogisticRegression()
+    model = LogisticRegression(max_iter=10000)
     model.fit(predictors, response)
     return model
 
@@ -99,11 +99,11 @@ def fit_model_to (training):
     # fit the model the same way as step 4
     predictors = training.iloc[:,:-1]
     response = training.iloc[:,-1]
-    model = LogisticRegression()
+    model = LogisticRegression(max_iter=10000)
     model.fit(predictors, response)
     # fit another model to standardized predictors in order to compare the coefficients with the same scale
     standardized = (predictors - predictors.mean()) / predictors.std()
-    standard_model = LogisticRegression()
+    standard_model = LogisticRegression(max_iter=10000)
     standard_model.fit(standardized, response)
     # get that model's coefficients and display them
     coeffs = pd.Series(standard_model.coef_[0], index=predictors.columns)
@@ -122,7 +122,7 @@ model = fit_model_to(df_training)
 # In[170]:
 
 
-columns = ['emp.var.rate', 'duration', 'cons.price.idx','nr.employed', 'contact','pdays','cons.conf.idx','default','previous','y']
+columns = ['duration','euribor3m','pdays','y']
 model = fit_model_to( df_training.loc[:,columns] )
 
 
@@ -136,7 +136,8 @@ st.title( 'Term Deposit Subscription Status vs. Potential Predictors' )
 st.sidebar.markdown( '''
 The heatmap shows the correlation between term deposit subscription status and its potential predictors. The predictors are choosen based on the logistic regression model built to predict the subscription status, 
 which is also available on https://github.com/LiyaZhang-ziqing/Bank. Last column of the heatmap is the area that need to focus on. None of the predictors has strong correlation with subscription status, 
-which explains why the F1 score from the modeling is relatively low. ''' )
+which explains why the F1 score from the modeling is relatively low. Moreover, the correlations between each predictors are weak. This helps avoid the situation where 
+similar variables are counting multiple times during the modeling process.''' )
 df_final = df.loc[:, columns]
 
 
@@ -148,8 +149,8 @@ import numpy as np
 import matplotlib.pyplot as plt
 correlation_coefficients = np.corrcoef(df_final, rowvar=False )
 sns.heatmap( correlation_coefficients, annot=True )
-plt.yticks( np.arange(10)+0.5, df_final.columns, rotation=0 )
-plt.xticks( np.arange(10)+0.5, df_final.columns, rotation=90 )
+plt.yticks( np.arange(4)+0.5, df_final.columns, rotation=0 )
+plt.xticks( np.arange(4)+0.5, df_final.columns, rotation=90 )
 plt.title('The correlation between term deposit subscription status and its predictors')
 st.pyplot(plt.gcf())
 
